@@ -55,17 +55,17 @@ The model separates rows into three categories:
 
 ### 3. Data Enrichment
 
-For each matched company, the workflow is designed to enrich with:
+The enrichment process was completed using a combination of automated and manual methods.  
+A custom Python script (developed with the help of ChatGPT) was used to extract and validate structured fields such as domains, website information, and standard formats. When automated methods were insufficient or information was missing, we supplemented the process with manual research on Google and other search engines.
 
-- Website URL, domain, TLD
-- Basic description and business tags
-- Country, region, city, postal code
-- Industry classifications (NAICS / SIC / ISIC / NACE if available)
-- Phone numbers and emails (where present)
-- Social media links (LinkedIn, Facebook, etc.)
-- Optional: automated checks to verify online presence matches the spreadsheet record
+This hybrid approach allowed us to:
+- Automatically parse website domains, TLDs, and contact patterns
+- Clean and standardize address fields when possible
+- Identify missing or inconsistent country, city, or postcode values
+- Validate whether a company’s online presence matched the dataset
+- Manually fill gaps or confirm uncertain matches through targeted online searches
 
-The goal is to reduce manual lookups while keeping a clear QC process.
+The result is a thoroughly enriched dataset that balances automation efficiency with human validation, ensuring accuracy for the final vendor-ready file.
 
 ---
 
