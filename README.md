@@ -25,7 +25,7 @@ The main use case is:
 
 ### 1. Group-Based Company Matching
 
-- Each company belongs to a **group** (e.g., 4 variants per group ID).
+- Each company belongs to a **group** (e.g., 5 variants per group ID).
 - A **Total Score** column ranks candidates within each group.
 - Flags identify the outcome:
   - `Winner_flag`: `Matched` or `Review`
@@ -77,15 +77,8 @@ The goal is to reduce manual lookups while keeping a clear QC process.
   - Country / location fields
   - Scoring and flags (or space for them)
 
-### `src/`
-- `presales_enrichment.py` (optional)  
-  Python script you can use to:
-  - Load the Excel file
-  - Apply additional enrichment steps
-  - Validate domains or names
-  - Export clean results as CSV/Excel
 
-### `excel/` (optional)
+### `excel/` 
 - `presales_matching_model.xlsx`  
   Main Excel file where formulas live:
   - Scoring logic
@@ -94,7 +87,7 @@ The goal is to reduce manual lookups while keeping a clear QC process.
 
 ### Top-level
 - `README.md` – This documentation
-- `requirements.txt` – Python dependencies (if you use the script)
+- `requirements.txt` – Python dependencies 
 - `.gitignore` – To ignore temporary files, virtual env, etc.
 
 ---
