@@ -121,23 +121,23 @@ This is the version you would deliver to the client or use in downstream systems
 
 For each input record (`row_key`), the model compares it to several candidate companies and scores each one using dedicated scoring columns:
 
-- `addr_score`  Column CD
+- `addr_score`  (Column CD)
   Measures how well the **address information** matches (street, city, postcode).  
   Higher score = closer address match and fewer conflicts.
 
-- `website_domain_score`  Column CE
+- `website_domain_score`  (Column CE)
   Compares the **website/domain** of the candidate with the expected or known domain.  
   A correct, consistent domain gets a high score; missing or conflicting domains get a lower score or zero.
 
-- `contact_score`  Column CF
+- `contact_score`  (Column CF)
   Captures matches on **phone numbers and emails**.  
   Matching contact details is a strong signal that two records refer to the same company.
 
-- `country_code_score`  Column CG
+- `country_code_score`  (Column CG)
   Rewards an exact **country code** match and penalizes mismatches.  
   In practice, this works almost like a hard filter: wrong country usually means wrong company.
 
-- `Total Score`  Column CH
+- `Total Score`  (Column CH)
   Overall score for the candidate, typically a weighted sum of the components above:  
 
   ```text
