@@ -109,11 +109,3 @@ The goal is to reduce manual lookups while keeping a clear QC process.
 5. Export `Matches_selected` as your **final client-ready file**.
 
 ---
-
-### Option B — With Python Automation
-
-1. Create and activate a virtual environment (optional but recommended):
-
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # Windows: .venv\Scripts\activate
