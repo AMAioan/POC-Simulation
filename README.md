@@ -13,7 +13,10 @@ It combines:
 
 - Excel-based logic (scoring, flags, filtering)
 - Optional Python automation for enrichment
-- A clear separation between **raw data**, **matching logic**, and **final outputs**
+- A clear separation between:
+  - **Raw data**
+  - **Matching logic**
+  - **Client-ready final output**
 
 The main use case is:  
 > “I have many possible company variants per group and I need to choose the best match, enrich it with reliable info, and quickly spot rows that need manual review.”
@@ -69,20 +72,36 @@ The goal is to reduce manual lookups while keeping a clear QC process.
 ## 🗂 Data & Files
 
 ### `data/`
+
 - `presales_data_sample.xlsx`  
-  Raw sample data you’re working with. Typically includes:
+  Raw sample data used during development and testing. Typically includes:
   - Group ID
   - Company name
   - Country / location fields
-  - Scoring and flags (or space for them)
 
+- `ppresales_data_vendor.xlsx`  
+  **Clean, client-ready file** generated after:
+  - Scoring and matching are applied
+  - Ties and poor matches are reviewed
+  - Enrichment fields are completed
+This is the version you would deliver to the client or use in downstream systems.
 
-### `excel/` 
 - `presales_matching_model.xlsx`  
   Main Excel file where formulas live:
   - Scoring logic
   - Conditional formatting
   - Summary sheets (winners, ties, poor matches)
+
+### `src/`
+
+- `presales_enrichment.py` (optional)  
+  Python script you can use to:
+  - Load `data/presales_data_sample.xlsx`
+  - Apply additional enrichment steps
+  - Validate domains or names
+  - Output updated data and regenerate `presales_data_final.xlsx`
+
+
 
 ### Top-level
 - `README.md` – This documentation
@@ -93,18 +112,49 @@ The goal is to reduce manual lookups while keeping a clear QC process.
 
 ## 🚀 How to Use
 
-### Option A — Excel-Only Workflow
+### Excel Workflow
 
-1. **Open** `presales_matching_model.xlsx` (or your current Excel file).
-2. Ensure it links or contains the raw data from `data/presales_data_sample.xlsx`.
+1. **Open** `presales_matching_model.xlsx`
+2. `!presales_data_match` represents the initial filtering stage. Here, we compare the original company information (Columns C–I) against all candidate fields to narrow down the possible matches.
+
+2.1 🔢 Scoring Columns & Match Selection
+
+For each input record (`row_key`), the model compares it to several candidate companies and scores each one using dedicated scoring columns:
+
+- `addr_score`  Column CD
+  Measures how well the **address information** matches (street, city, postcode).  
+  Higher score = closer address match and fewer conflicts.
+
+- `website_domain_score`  Column CE
+  Compares the **website/domain** of the candidate with the expected or known domain.  
+  A correct, consistent domain gets a high score; missing or conflicting domains get a lower score or zero.
+
+- `contact_score`  Column CF
+  Captures matches on **phone numbers and emails**.  
+  Matching contact details is a strong signal that two records refer to the same company.
+
+- `country_code_score`  Column CG
+  Rewards an exact **country code** match and penalizes mismatches.  
+  In practice, this works almost like a hard filter: wrong country usually means wrong company.
+
+- `Total Score`  Column CH
+  Overall score for the candidate, typically a weighted sum of the components above:  
+
+  ```text
+  Total Score = addr_score
+              + website_domain_score
+              + contact_score
+              + country_code_score
+
+
 3. Use formulas to calculate:
    - `Total Score` per row
    - `Winner_flag`
    - `tie_flag`
    - `low_confidence`
 4. Create separate sheets:
-   - `Matches_selected` → only high-confidence winners
-   - `Review_needed` → rows where `tie_flag` or `low_confidence` is set
-5. Export `Matches_selected` as your **final client-ready file**.
+   - `!Matches_selected` → only high-confidence winners
+   - `!QC_Matches` → contains all rows marked as TRUE for `top_in_group` (Column CE). In this sheet, we review, correct, and standardize the data—either manually or with additional formulas—so it’s fully cleaned and ready for the vendor.
+6. Copy values from `!QC_Matches`and exported `!CLean_Vendor_Master` as our **final client-ready file**.
 
 ---
