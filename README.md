@@ -94,19 +94,15 @@ This is the version you would deliver to the client or use in downstream systems
 
 ### `src/`
 
-- `presales_enrichment.py` (optional)  
-  Python script you can use to:
-  - Load `data/presales_data_sample.xlsx`
-  - Apply additional enrichment steps
-  - Validate domains or names
-  - Output updated data and regenerate `presales_data_final.xlsx`
+- `presales_enrichment.py` 
+
+ After reviewing the 592 companies, we used a combination of Wikidata, website scraping, and Google Places APIs to gather additional information and populate missing fields. All retrieved data was manually reviewed and corrected wherever inconsistencies were found.
 
 
 
 ### Top-level
 - `README.md` – This documentation
 - `requirements.txt` – Python dependencies 
-- `.gitignore` – To ignore temporary files, virtual env, etc.
 
 ---
 
